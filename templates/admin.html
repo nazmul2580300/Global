@@ -81,6 +81,75 @@ input.inline-edit{width:80px;padding:5px 7px;border:1px solid var(--border);bord
 .page-btn{padding:6px 12px;border:1px solid var(--border);background:white;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;color:var(--text-muted);}
 .page-btn.active{background:var(--primary);color:white;border-color:var(--primary);}
 .row-check{width:15px;height:15px;cursor:pointer;}
+
+/* ===== Professional User Table ===== */
+.user-row-cell{display:flex;align-items:center;gap:10px;}
+.user-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#818CF8);color:white;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;}
+.user-name-cell{display:flex;flex-direction:column;}
+.user-name-cell .un-name{font-weight:700;color:var(--text-main);font-size:13px;}
+.user-name-cell .un-sub{font-size:11px;color:var(--text-muted);}
+.kyc-mini-badge{font-size:10px;padding:1px 7px;border-radius:8px;font-weight:700;display:inline-flex;align-items:center;gap:3px;margin-top:2px;width:fit-content;}
+.kyc-mini-verified{background:#D1FAE5;color:#065F46;}
+.kyc-mini-none{background:#F1F5F9;color:#94A3B8;}
+.btn-view-user{background:var(--primary);color:white;border:none;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;}
+.btn-view-user:hover{background:var(--primary-dark);}
+
+/* ===== Modal ===== */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,0.6);z-index:2000;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(2px);}
+.modal-overlay.show{display:flex;animation:fadeIn .2s ease;}
+.modal-box{background:white;border-radius:18px;width:100%;max-width:780px;max-height:92vh;overflow-y:auto;box-shadow:0 25px 60px rgba(0,0,0,0.3);}
+.modal-header{position:sticky;top:0;background:white;display:flex;align-items:center;justify-content:space-between;padding:20px 25px;border-bottom:1px solid var(--border);z-index:5;}
+.modal-header h2{font-size:18px;}
+.modal-close{width:34px;height:34px;border-radius:50%;background:#F1F5F9;border:none;cursor:pointer;font-size:15px;color:var(--text-muted);display:flex;align-items:center;justify-content:center;}
+.modal-close:hover{background:#E2E8F0;}
+.modal-body{padding:25px;}
+
+.user-profile-head{display:flex;align-items:center;gap:18px;margin-bottom:25px;padding-bottom:20px;border-bottom:1px solid var(--border);}
+.user-profile-avatar{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#818CF8);color:white;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:26px;flex-shrink:0;}
+.user-profile-info h3{font-size:19px;margin-bottom:4px;}
+.user-profile-info .upi-meta{font-size:12px;color:var(--text-muted);display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;}
+.user-profile-info .upi-meta span{display:flex;align-items:center;gap:5px;}
+
+.modal-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:25px;}
+.modal-stat-card{background:#F8FAFC;border-radius:12px;padding:14px;border:1px solid var(--border);}
+.modal-stat-card .ms-label{font-size:11px;color:var(--text-muted);margin-bottom:5px;}
+.modal-stat-card .ms-value{font-size:18px;font-weight:800;color:var(--primary-dark);}
+
+.modal-tabs{display:flex;gap:4px;background:#F1F5F9;border-radius:10px;padding:4px;margin-bottom:20px;overflow-x:auto;}
+.modal-tab-btn{flex:1;text-align:center;padding:9px 10px;font-size:12.5px;font-weight:700;color:var(--text-muted);border-radius:7px;cursor:pointer;white-space:nowrap;}
+.modal-tab-btn.active{background:white;color:var(--primary);box-shadow:0 1px 3px rgba(0,0,0,0.08);}
+.modal-tab-content{display:none;}
+.modal-tab-content.active{display:block;animation:fadeIn .2s ease;}
+
+.edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.edit-field{margin-bottom:14px;}
+.edit-field label{font-size:12px;font-weight:700;color:var(--text-muted);display:block;margin-bottom:6px;}
+.edit-field input,.edit-field select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:9px;font-size:13px;font-family:'Hind Siliguri',sans-serif;outline:none;}
+.edit-field input:focus,.edit-field select:focus{border-color:var(--primary);}
+.edit-field input[readonly]{background:#F1F5F9;color:var(--text-muted);}
+
+.detail-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #F1F5F9;font-size:13px;}
+.detail-row:last-child{border-bottom:none;}
+.detail-row .dr-label{color:var(--text-muted);}
+.detail-row .dr-value{font-weight:700;color:var(--text-main);}
+
+.pm-card{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:#F8FAFC;border-radius:10px;margin-bottom:10px;border:1px solid var(--border);}
+.pm-card.verified{border-color:var(--success);background:#F0FDF4;}
+.pm-left{display:flex;align-items:center;gap:10px;}
+.pm-left i{font-size:18px;color:var(--text-muted);width:22px;text-align:center;}
+.pm-name{font-weight:700;font-size:13px;}
+.pm-number{font-size:12px;color:var(--text-muted);}
+
+.danger-zone{background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:16px;margin-top:15px;}
+.danger-zone h4{color:#991B1B;font-size:13px;margin-bottom:10px;}
+.btn-danger-action{background:white;color:var(--danger);border:1px solid var(--danger);padding:9px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;margin-right:8px;margin-top:6px;}
+.btn-danger-action:hover{background:var(--danger);color:white;}
+
+.btn-save-bar{position:sticky;bottom:0;background:white;padding:15px 0 0 0;margin-top:10px;border-top:1px solid var(--border);display:flex;gap:10px;}
+.btn-save-main{flex:1;background:var(--primary);color:white;border:none;padding:13px;border-radius:10px;font-weight:700;font-size:14px;cursor:pointer;font-family:'Hind Siliguri',sans-serif;}
+.btn-save-main:hover{background:var(--primary-dark);}
+
+@media(max-width:600px){.modal-stat-grid{grid-template-columns:repeat(2,1fr);} .edit-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -135,10 +204,10 @@ input.inline-edit{width:80px;padding:5px 7px;border:1px solid var(--border);bord
           <h3 style="margin:0;">সকল ইউজার</h3>
           <div style="display:flex;gap:10px;flex:1;justify-content:flex-end;flex-wrap:wrap;">
             <div class="search-box" style="max-width:260px;"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="users-search" placeholder="নাম/ফোন/ইমেইল দিয়ে খুঁজুন..." oninput="filterUsers()"></div>
-            <button class="btn-export" onclick="exportTableToCSV('users-table-body', ['নাম','ইমেইল/ফোন','ডিপোজিট','আর্নিং','লেভেল'], 'users')"><i class="fa-solid fa-file-csv"></i> CSV</button>
+            <button class="btn-export" onclick="exportTableToCSV('users-table-body', ['নাম','ফোন/ইমেইল','ডিপোজিট','আর্নিং','লেভেল','রেফার','স্ট্যাটাস'], 'users')"><i class="fa-solid fa-file-csv"></i> CSV</button>
           </div>
         </div>
-        <table><thead><tr><th>নাম</th><th>ইমেইল/ফোন</th><th>ডিপোজিট</th><th>আর্নিং</th><th>লেভেল</th><th>অ্যাকশন</th></tr></thead><tbody id="users-table-body"><tr><td colspan="6" class="empty-row">লোড হচ্ছে...</td></tr></tbody></table>
+        <table><thead><tr><th>ইউজার</th><th>ফোন/ইমেইল</th><th>ডিপোজিট</th><th>আর্নিং</th><th>লেভেল</th><th>রেফার</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead><tbody id="users-table-body"><tr><td colspan="8" class="empty-row">লোড হচ্ছে...</td></tr></tbody></table>
         <div class="pagination" id="users-pagination"></div>
       </div>
     </div>
@@ -214,10 +283,23 @@ input.inline-edit{width:80px;padding:5px 7px;border:1px solid var(--border);bord
   </div>
 </div>
 
+<!-- ===== ইউজার ডিটেইল মডাল ===== -->
+<div class="modal-overlay" id="user-modal-overlay">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2><i class="fa-solid fa-user-gear" style="color:var(--primary);margin-right:8px;"></i>ইউজার প্রোফাইল</h2>
+      <button class="modal-close" onclick="closeUserModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="modal-body" id="user-modal-body">
+      <!-- JS দিয়ে রেন্ডার হবে -->
+    </div>
+  </div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, doc, updateDoc, addDoc, serverTimestamp, query, orderBy, where, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, addDoc, deleteDoc, serverTimestamp, query, orderBy, where, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD3QACAZnv-Ob73R0o73H0ozCWUr08B1_M",
@@ -313,6 +395,7 @@ async function loadUsers() {
   const snap = await getDocs(collection(db, "users"));
   allUsers = [];
   snap.forEach(d => allUsers.push({ id: d.id, ...d.data() }));
+  await computeReferCounts();
   document.getElementById('stat-users').textContent = allUsers.length;
   usersCurrentPage = 1;
   renderUsersTable(allUsers);
@@ -328,10 +411,16 @@ window.filterUsers = function() {
   );
   renderUsersTable(filtered);
 };
+function getInitials(name) {
+  if (!name) return "?";
+  const parts = name.trim().split(" ");
+  return parts.length > 1 ? (parts[0][0] + parts[1][0]).toUpperCase() : name.substring(0,2).toUpperCase();
+}
+
 function renderUsersTable(list) {
   const body = document.getElementById('users-table-body');
   const pagEl = document.getElementById('users-pagination');
-  if (list.length === 0) { body.innerHTML = '<tr><td colspan="6" class="empty-row">কোনো ইউজার পাওয়া যায়নি</td></tr>'; pagEl.innerHTML = ''; return; }
+  if (list.length === 0) { body.innerHTML = '<tr><td colspan="8" class="empty-row">কোনো ইউজার পাওয়া যায়নি</td></tr>'; pagEl.innerHTML = ''; return; }
 
   const totalPages = Math.ceil(list.length / USERS_PAGE_SIZE);
   if (usersCurrentPage > totalPages) usersCurrentPage = totalPages;
@@ -341,18 +430,31 @@ function renderUsersTable(list) {
   let html = "";
   pageItems.forEach(u => {
     const d_id = u.id;
+    const referCount = (window._referCounts && window._referCounts[u.referCode]) || 0;
+    const kycVerified = u.kycStatus === 'approved';
+    const isBanned = u.accountStatus === 'banned';
     html += `<tr>
-      <td>${u.name || '-'}</td>
-      <td>${u.email || u.phone || '-'}</td>
-      <td><input class="inline-edit" id="dep-${d_id}" value="${u.depositWallet || 0}"></td>
-      <td><input class="inline-edit" id="earn-${d_id}" value="${u.earningsWallet || 0}"></td>
-      <td><input class="inline-edit" id="lvl-${d_id}" value="${u.labelLevel || 0}" style="width:40px;"></td>
-      <td><button class="btn-sm btn-edit" onclick="saveUser('${d_id}')">সেভ</button></td>
+      <td>
+        <div class="user-row-cell">
+          <div class="user-avatar">${getInitials(u.name)}</div>
+          <div class="user-name-cell">
+            <span class="un-name">${u.name || '-'}</span>
+            <span class="un-sub">ID: ${d_id.substring(0,8).toUpperCase()}</span>
+            ${kycVerified ? '<span class="kyc-mini-badge kyc-mini-verified"><i class="fa-solid fa-circle-check"></i> KYC ভেরিফাইড</span>' : '<span class="kyc-mini-badge kyc-mini-none">KYC নেই</span>'}
+          </div>
+        </div>
+      </td>
+      <td>${u.phone || u.email || '-'}</td>
+      <td style="font-weight:700;color:var(--success);">৳ ${(u.depositWallet||0).toLocaleString()}</td>
+      <td style="font-weight:700;color:var(--primary-dark);">৳ ${(u.earningsWallet||0).toLocaleString()}</td>
+      <td>${u.labelLevel ? `Label ${u.labelLevel}` : '-'}</td>
+      <td>${referCount} জন</td>
+      <td>${isBanned ? '<span class="tag tag-rejected">ব্যান করা</span>' : '<span class="tag tag-approved">সক্রিয়</span>'}</td>
+      <td><button class="btn-view-user" onclick="openUserModal('${d_id}')"><i class="fa-solid fa-eye"></i> দেখুন</button></td>
     </tr>`;
   });
   body.innerHTML = html;
 
-  // পেজিনেশন বাটন বানাও
   let pagHtml = "";
   if (totalPages > 1) {
     for (let p = 1; p <= totalPages; p++) {
@@ -366,13 +468,316 @@ window.goToUsersPage = function(p) {
   usersCurrentPage = p;
   renderUsersTable(window._currentFilteredUsers || allUsers);
 };
-window.saveUser = async function(uid) {
-  const depositWallet = Number(document.getElementById(`dep-${uid}`).value) || 0;
-  const earningsWallet = Number(document.getElementById(`earn-${uid}`).value) || 0;
-  const labelLevel = Number(document.getElementById(`lvl-${uid}`).value) || 0;
-  await updateDoc(doc(db, "users", uid), { depositWallet, earningsWallet, labelLevel });
-  logActivity('ইউজার আপডেট', `UID: ${uid}, ডিপোজিট: ৳${depositWallet}, আর্নিং: ৳${earningsWallet}, লেভেল: ${labelLevel}`);
-  alert("ইউজার তথ্য আপডেট হয়েছে।");
+
+// রেফার কাউন্ট প্রি-ক্যালকুলেট করো (সব ইউজার লোড করার সময়)
+async function computeReferCounts() {
+  const counts = {};
+  allUsers.forEach(u => {
+    if (u.referredBy) counts[u.referredBy] = (counts[u.referredBy] || 0) + 1;
+  });
+  window._referCounts = counts;
+}
+
+// ===================================================================
+// ===== পূর্ণাঙ্গ ইউজার প্রোফাইল মডাল (Real-time, সম্পূর্ণ ডেটা) =====
+// ===================================================================
+let _currentModalUid = null;
+let _currentModalUserData = null;
+
+window.openUserModal = async function(uid) {
+  _currentModalUid = uid;
+  const overlay = document.getElementById('user-modal-overlay');
+  const body = document.getElementById('user-modal-body');
+  overlay.classList.add('show');
+  body.innerHTML = '<p style="text-align:center;padding:40px;color:var(--text-muted);"><i class="fa-solid fa-spinner fa-spin"></i> লোড হচ্ছে...</p>';
+
+  try {
+    // ইউজার বেসিক ডেটা
+    const userSnap = await getDocs(query(collection(db, "users")));
+    let u = null;
+    userSnap.forEach(d => { if (d.id === uid) u = { id: d.id, ...d.data() }; });
+    if (!u) { body.innerHTML = '<p style="text-align:center;padding:30px;">ইউজার পাওয়া যায়নি।</p>'; return; }
+    _currentModalUserData = u;
+
+    // রিলেটেড ডেটা একসাথে আনো
+    const [depSnap, witSnap, kycSnap, paySnap, supSnap, referSnap] = await Promise.all([
+      getDocs(query(collection(db, "depositRequests"), where("uid", "==", uid))),
+      getDocs(query(collection(db, "withdrawRequests"), where("uid", "==", uid))),
+      getDocs(query(collection(db, "kycRequests"), where("uid", "==", uid))),
+      getDocs(query(collection(db, "paymentMethods"), where("uid", "==", uid))),
+      getDocs(query(collection(db, "supportTickets"), where("uid", "==", uid))),
+      getDocs(query(collection(db, "users"), where("referredBy", "==", u.referCode || "___none___")))
+    ]);
+
+    let deposits = []; depSnap.forEach(d => deposits.push({id:d.id, ...d.data()}));
+    let withdrawals = []; witSnap.forEach(d => withdrawals.push({id:d.id, ...d.data()}));
+    let kycList = []; kycSnap.forEach(d => kycList.push({id:d.id, ...d.data()}));
+    let payMethods = []; paySnap.forEach(d => payMethods.push({id:d.id, ...d.data()}));
+    let tickets = []; supSnap.forEach(d => tickets.push({id:d.id, ...d.data()}));
+    let referredUsers = []; referSnap.forEach(d => referredUsers.push({id:d.id, ...d.data()}));
+
+    const totalDeposited = deposits.filter(d=>d.status==='approved').reduce((s,d)=>s+Number(d.amount||0),0);
+    const totalWithdrawn = withdrawals.filter(d=>d.status==='approved').reduce((s,d)=>s+Number(d.amount||0),0);
+    const referCount = referredUsers.length;
+    const isBanned = u.accountStatus === 'banned';
+
+    renderUserModalContent(u, { deposits, withdrawals, kycList, payMethods, tickets, referredUsers, totalDeposited, totalWithdrawn, referCount, isBanned });
+  } catch(e) {
+    body.innerHTML = `<p style="text-align:center;padding:30px;color:var(--danger);">ডেটা লোড করা যায়নি: ${e.message}</p>`;
+  }
+};
+
+window.closeUserModal = function() {
+  document.getElementById('user-modal-overlay').classList.remove('show');
+  _currentModalUid = null;
+};
+document.getElementById('user-modal-overlay').addEventListener('click', (e) => {
+  if (e.target.id === 'user-modal-overlay') closeUserModal();
+});
+
+function renderUserModalContent(u, extra) {
+  const { deposits, withdrawals, kycList, payMethods, tickets, referredUsers, totalDeposited, totalWithdrawn, referCount, isBanned } = extra;
+  const body = document.getElementById('user-modal-body');
+  const kycVerified = u.kycStatus === 'approved';
+  const powerActive = u.powerPlan && (u.powerRemainingDays || 0) > 0;
+
+  body.innerHTML = `
+    <div class="user-profile-head">
+      <div class="user-profile-avatar">${getInitials(u.name)}</div>
+      <div class="user-profile-info">
+        <h3>${u.name || 'নাম নেই'} ${kycVerified ? '<span class="kyc-mini-badge kyc-mini-verified" style="margin-left:6px;"><i class="fa-solid fa-circle-check"></i> KYC ভেরিফাইড</span>' : ''} ${isBanned ? '<span class="tag tag-rejected" style="margin-left:6px;">ব্যান করা</span>' : ''}</h3>
+        <div class="upi-meta">
+          <span><i class="fa-solid fa-phone"></i> ${u.phone || '-'}</span>
+          <span><i class="fa-solid fa-envelope"></i> ${u.email || '-'}</span>
+          <span><i class="fa-solid fa-id-card"></i> UID: ${u.id}</span>
+          <span><i class="fa-solid fa-calendar"></i> ${u.createdAt ? new Date(u.createdAt).toLocaleDateString('bn-BD') : '-'}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-stat-grid">
+      <div class="modal-stat-card"><div class="ms-label">ডিপোজিট ব্যালেন্স</div><div class="ms-value" style="color:var(--success);">৳ ${(u.depositWallet||0).toLocaleString()}</div></div>
+      <div class="modal-stat-card"><div class="ms-label">আর্নিং ব্যালেন্স</div><div class="ms-value">৳ ${(u.earningsWallet||0).toLocaleString()}</div></div>
+      <div class="modal-stat-card"><div class="ms-label">মোট ডিপোজিট (অ্যাপ্রুভড)</div><div class="ms-value">৳ ${totalDeposited.toLocaleString()}</div></div>
+      <div class="modal-stat-card"><div class="ms-label">মোট উইথড্র (অ্যাপ্রুভড)</div><div class="ms-value">৳ ${totalWithdrawn.toLocaleString()}</div></div>
+      <div class="modal-stat-card"><div class="ms-label">রেফার কাউন্ট</div><div class="ms-value">${referCount} জন</div></div>
+      <div class="modal-stat-card"><div class="ms-label">Label লেভেল</div><div class="ms-value">${u.labelLevel || 0}</div></div>
+      <div class="modal-stat-card"><div class="ms-label">Power প্ল্যান</div><div class="ms-value" style="font-size:14px;">${powerActive ? u.powerPlan.name + ' (' + u.powerRemainingDays + ' দিন)' : 'নেই'}</div></div>
+      <div class="modal-stat-card"><div class="ms-label">রেফার কোড</div><div class="ms-value" style="font-size:14px;">${u.referCode || '-'}</div></div>
+    </div>
+
+    <div class="modal-tabs">
+      <div class="modal-tab-btn active" data-tab="mt-edit" onclick="switchModalTab('mt-edit')">এডিট</div>
+      <div class="modal-tab-btn" data-tab="mt-financial" onclick="switchModalTab('mt-financial')">লেনদেন</div>
+      <div class="modal-tab-btn" data-tab="mt-payment" onclick="switchModalTab('mt-payment')">পেমেন্ট মেথড</div>
+      <div class="modal-tab-btn" data-tab="mt-referral" onclick="switchModalTab('mt-referral')">রেফারেল</div>
+      <div class="modal-tab-btn" data-tab="mt-kyc" onclick="switchModalTab('mt-kyc')">KYC</div>
+      <div class="modal-tab-btn" data-tab="mt-danger" onclick="switchModalTab('mt-danger')">অ্যাকশন</div>
+    </div>
+
+    <!-- এডিট ট্যাব -->
+    <div class="modal-tab-content active" id="mt-edit">
+      <div class="edit-grid">
+        <div class="edit-field"><label>নাম</label><input type="text" id="edit-name" value="${u.name||''}"></div>
+        <div class="edit-field"><label>ফোন</label><input type="text" id="edit-phone" value="${u.phone||''}"></div>
+        <div class="edit-field"><label>ইমেইল</label><input type="text" id="edit-email" value="${u.email||''}" readonly></div>
+        <div class="edit-field"><label>Label লেভেল</label><input type="number" id="edit-label" value="${u.labelLevel||0}" min="0" max="10"></div>
+        <div class="edit-field"><label>ডিপোজিট ব্যালেন্স (৳)</label><input type="number" id="edit-deposit" value="${u.depositWallet||0}"></div>
+        <div class="edit-field"><label>আর্নিং ব্যালেন্স (৳)</label><input type="number" id="edit-earnings" value="${u.earningsWallet||0}"></div>
+        <div class="edit-field"><label>Power Remaining Days</label><input type="number" id="edit-power-days" value="${u.powerRemainingDays||0}" min="0"></div>
+        <div class="edit-field"><label>Power Total Earned (৳)</label><input type="number" id="edit-power-earned" value="${u.powerTotalEarned||0}"></div>
+      </div>
+      <div class="btn-save-bar">
+        <button class="btn-save-main" onclick="saveUserFullEdit()"><i class="fa-solid fa-floppy-disk"></i> পরিবর্তন সেভ করুন</button>
+      </div>
+    </div>
+
+    <!-- লেনদেন ট্যাব -->
+    <div class="modal-tab-content" id="mt-financial">
+      <h4 style="font-size:13px;margin-bottom:10px;color:var(--text-muted);">ডিপোজিট হিস্ট্রি (${deposits.length})</h4>
+      ${deposits.length === 0 ? '<p style="font-size:12px;color:var(--text-muted);padding:10px 0;">কোনো ডিপোজিট নেই</p>' : deposits.map(d => `
+        <div class="detail-row"><span class="dr-label">${d.method} • ${d.trxId||'-'} ${d.createdAt && d.createdAt.toDate ? '• ' + d.createdAt.toDate().toLocaleDateString('bn-BD') : ''}</span><span class="dr-value">৳ ${d.amount} <span class="tag tag-${d.status}" style="margin-left:6px;">${d.status}</span></span></div>
+      `).join('')}
+      <h4 style="font-size:13px;margin:18px 0 10px 0;color:var(--text-muted);">উইথড্র হিস্ট্রি (${withdrawals.length})</h4>
+      ${withdrawals.length === 0 ? '<p style="font-size:12px;color:var(--text-muted);padding:10px 0;">কোনো উইথড্র নেই</p>' : withdrawals.map(w => `
+        <div class="detail-row"><span class="dr-label">${w.method} • ${w.account||'-'} ${w.createdAt && w.createdAt.toDate ? '• ' + w.createdAt.toDate().toLocaleDateString('bn-BD') : ''}</span><span class="dr-value">৳ ${w.amount} <span class="tag tag-${w.status}" style="margin-left:6px;">${w.status}</span></span></div>
+      `).join('')}
+      <h4 style="font-size:13px;margin:18px 0 10px 0;color:var(--text-muted);">সাপোর্ট টিকেট (${tickets.length})</h4>
+      ${tickets.length === 0 ? '<p style="font-size:12px;color:var(--text-muted);padding:10px 0;">কোনো টিকেট নেই</p>' : tickets.map(t => `
+        <div class="detail-row"><span class="dr-label">${t.subject}: ${t.detail}</span><span class="dr-value"><span class="tag tag-${t.status==='open'?'pending':'approved'}">${t.status}</span></span></div>
+      `).join('')}
+    </div>
+
+    <!-- পেমেন্ট মেথড ট্যাব -->
+    <div class="modal-tab-content" id="mt-payment">
+      ${payMethods.length === 0 ? '<p style="font-size:13px;color:var(--text-muted);padding:10px 0;">কোনো পেমেন্ট মেথড সেট করা নেই।</p>' : payMethods.map(p => `
+        <div class="pm-card ${p.status==='approved'?'verified':''}">
+          <div class="pm-left">
+            <i class="fa-solid ${p.method==='crypto'?'fa-bitcoin':'fa-mobile-screen'}"></i>
+            <div><div class="pm-name">${p.method.toUpperCase()}</div><div class="pm-number">${p.number}</div></div>
+          </div>
+          <div>
+            <span class="tag tag-${p.status==='approved'?'approved':p.status==='pending'?'pending':'rejected'}" style="margin-right:8px;">${p.status==='approved'?'ভেরিফাইড':p.status==='pending'?'পেন্ডিং':'সেভ করা'}</span>
+            ${p.status !== 'approved' ? `<button class="btn-sm btn-approve" onclick="adminVerifyPaymentMethod('${p.id}','${p.uid}')">ভেরিফাই করুন</button>` : `<button class="btn-sm btn-reject" onclick="adminRevokePaymentMethod('${p.id}')">বাতিল করুন</button>`}
+          </div>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- রেফারেল ট্যাব -->
+    <div class="modal-tab-content" id="mt-referral">
+      <div class="detail-row"><span class="dr-label">রেফারেল কোড</span><span class="dr-value">${u.referCode || '-'}</span></div>
+      <div class="detail-row"><span class="dr-label">যার মাধ্যমে এসেছে</span><span class="dr-value">${u.referredBy || 'কেউ না (ডাইরেক্ট)'}</span></div>
+      <div class="detail-row"><span class="dr-label">মোট রেফার করেছে</span><span class="dr-value">${referCount} জন</span></div>
+      <h4 style="font-size:13px;margin:18px 0 10px 0;color:var(--text-muted);">রেফার করা ইউজার তালিকা</h4>
+      ${referredUsers.length === 0 ? '<p style="font-size:12px;color:var(--text-muted);">কাউকে রেফার করেনি।</p>' : referredUsers.map(r => `
+        <div class="detail-row"><span class="dr-label">${r.name || '-'} (${r.phone||r.email||'-'})</span><span class="dr-value">৳ ${(r.depositWallet||0).toLocaleString()} ডিপোজিট</span></div>
+      `).join('')}
+    </div>
+
+    <!-- KYC ট্যাব -->
+    <div class="modal-tab-content" id="mt-kyc">
+      <div class="detail-row"><span class="dr-label">বর্তমান স্ট্যাটাস</span><span class="dr-value"><span class="tag tag-${u.kycStatus==='approved'?'approved':u.kycStatus==='pending'?'pending':'rejected'}">${u.kycStatus==='approved'?'ভেরিফাইড':u.kycStatus==='pending'?'পেন্ডিং':'সাবমিট করেনি'}</span></span></div>
+      <div class="detail-row"><span class="dr-label">NID নম্বর</span><span class="dr-value">${u.kycNid || '-'}</span></div>
+      ${kycList.length > 0 ? kycList.map(k => `
+        <div class="detail-row"><span class="dr-label">রিকোয়েস্ট: NID ${k.nid}</span><span class="dr-value">
+          <span class="tag tag-${k.status}" style="margin-right:8px;">${k.status}</span>
+          ${k.status === 'pending' ? `<button class="btn-sm btn-approve" onclick="adminApproveKyc('${k.id}','${u.id}')">অ্যাপ্রুভ</button><button class="btn-sm btn-reject" onclick="adminRejectKyc('${k.id}','${u.id}')">রিজেক্ট</button>` : ''}
+        </span></div>
+      `).join('') : '<p style="font-size:12px;color:var(--text-muted);">কোনো KYC রিকোয়েস্ট নেই।</p>'}
+    </div>
+
+    <!-- অ্যাকশন (ডেঞ্জার জোন) ট্যাব -->
+    <div class="modal-tab-content" id="mt-danger">
+      <div class="danger-zone">
+        <h4><i class="fa-solid fa-triangle-exclamation"></i> অ্যাকাউন্ট অ্যাকশন</h4>
+        <p style="font-size:12px;color:#7F1D1D;margin-bottom:10px;">এই অ্যাকশনগুলো সরাসরি ইউজারের অ্যাকাউন্টে প্রভাব ফেলবে। সতর্কতার সাথে ব্যবহার করুন।</p>
+        ${isBanned 
+          ? `<button class="btn-danger-action" style="border-color:var(--success);color:var(--success);" onclick="toggleBanUser(false)"><i class="fa-solid fa-unlock"></i> আনব্যান করুন</button>`
+          : `<button class="btn-danger-action" onclick="toggleBanUser(true)"><i class="fa-solid fa-ban"></i> অ্যাকাউন্ট ব্যান করুন</button>`
+        }
+        <button class="btn-danger-action" onclick="resetUserBalance()"><i class="fa-solid fa-rotate-left"></i> ব্যালেন্স রিসেট (০ করুন)</button>
+        <button class="btn-danger-action" onclick="resetUserKyc()"><i class="fa-solid fa-id-card"></i> KYC রিসেট করুন</button>
+        <button class="btn-danger-action" onclick="deleteUserAccount()" style="background:var(--danger);color:white;"><i class="fa-solid fa-trash"></i> অ্যাকাউন্ট ডিলিট করুন</button>
+      </div>
+    </div>
+  `;
+}
+
+window.switchModalTab = function(tabId) {
+  document.querySelectorAll('.modal-tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.modal-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  document.querySelector(`.modal-tab-btn[data-tab="${tabId}"]`).classList.add('active');
+};
+
+// ===== এডিট সেভ করা =====
+window.saveUserFullEdit = async function() {
+  if (!_currentModalUid) return;
+  const updates = {
+    name: document.getElementById('edit-name').value.trim(),
+    phone: document.getElementById('edit-phone').value.trim(),
+    labelLevel: Number(document.getElementById('edit-label').value) || 0,
+    depositWallet: Number(document.getElementById('edit-deposit').value) || 0,
+    earningsWallet: Number(document.getElementById('edit-earnings').value) || 0,
+    powerRemainingDays: Number(document.getElementById('edit-power-days').value) || 0,
+    powerTotalEarned: Number(document.getElementById('edit-power-earned').value) || 0
+  };
+  try {
+    await updateDoc(doc(db, "users", _currentModalUid), updates);
+    logActivity('ইউজার প্রোফাইল আপডেট', `UID: ${_currentModalUid}, নাম: ${updates.name}, ডিপোজিট: ৳${updates.depositWallet}, আর্নিং: ৳${updates.earningsWallet}, লেভেল: ${updates.labelLevel}`);
+    alert("✅ ইউজার তথ্য সফলভাবে আপডেট হয়েছে।");
+    closeUserModal();
+    loadUsers();
+  } catch(e) { alert("❌ সমস্যা হয়েছে: " + e.message); }
+};
+
+// ===== পেমেন্ট মেথড ভেরিফাই/রিভোক =====
+window.adminVerifyPaymentMethod = async function(pmId, uid) {
+  if (!confirm("এই পেমেন্ট মেথড ভেরিফাই করতে চান? ভেরিফাই হলে ইউজার এটি দিয়ে উইথড্র করতে পারবে।")) return;
+  await updateDoc(doc(db, "paymentMethods", pmId), { status: "approved" });
+  logActivity('পেমেন্ট মেথড ভেরিফাই', `UID: ${uid}, PM ID: ${pmId}`);
+  alert("✅ পেমেন্ট মেথড ভেরিফাই হয়েছে।");
+  openUserModal(_currentModalUid);
+};
+window.adminRevokePaymentMethod = async function(pmId) {
+  if (!confirm("এই পেমেন্ট মেথডের ভেরিফিকেশন বাতিল করতে চান?")) return;
+  await updateDoc(doc(db, "paymentMethods", pmId), { status: "saved" });
+  logActivity('পেমেন্ট মেথড ভেরিফিকেশন বাতিল', `PM ID: ${pmId}`);
+  openUserModal(_currentModalUid);
+};
+
+// ===== KYC অ্যাপ্রুভ/রিজেক্ট (মডাল থেকে) =====
+window.adminApproveKyc = async function(kycId, uid) {
+  const kycDoc = (await getDocs(query(collection(db, "kycRequests")))).docs.find(d => d.id === kycId);
+  const nid = kycDoc ? kycDoc.data().nid : "";
+  await updateDoc(doc(db, "kycRequests", kycId), { status: "approved" });
+  await updateDoc(doc(db, "users", uid), { kycStatus: "approved", kycNid: nid });
+  logActivity('KYC অ্যাপ্রুভ', `UID: ${uid}`);
+  alert("✅ KYC ভেরিফাই হয়েছে।");
+  openUserModal(_currentModalUid);
+  loadKyc();
+};
+window.adminRejectKyc = async function(kycId, uid) {
+  await updateDoc(doc(db, "kycRequests", kycId), { status: "rejected" });
+  await updateDoc(doc(db, "users", uid), { kycStatus: "none" });
+  logActivity('KYC রিজেক্ট', `UID: ${uid}`);
+  openUserModal(_currentModalUid);
+  loadKyc();
+};
+
+// ===== ব্যান/আনব্যান =====
+window.toggleBanUser = async function(ban) {
+  if (!_currentModalUid) return;
+  const confirmMsg = ban ? "এই ইউজারকে ব্যান করতে চান? ব্যান হলে সে লগইন করতে পারবে না (অ্যাপে enforce করতে হবে)।" : "এই ইউজারকে আনব্যান করতে চান?";
+  if (!confirm(confirmMsg)) return;
+  try {
+    await updateDoc(doc(db, "users", _currentModalUid), { accountStatus: ban ? "banned" : "active" });
+    logActivity(ban ? 'ইউজার ব্যান' : 'ইউজার আনব্যান', `UID: ${_currentModalUid}`);
+    alert(ban ? "✅ ইউজার ব্যান করা হয়েছে।" : "✅ ইউজার আনব্যান করা হয়েছে।");
+    openUserModal(_currentModalUid);
+    loadUsers();
+  } catch(e) { alert("❌ সমস্যা: " + e.message); }
+};
+
+// ===== ব্যালেন্স রিসেট =====
+window.resetUserBalance = async function() {
+  if (!_currentModalUid) return;
+  if (!confirm("⚠️ এই ইউজারের ডিপোজিট ও আর্নিং ব্যালেন্স ০ (শূন্য) করে দিতে চান? এই অ্যাকশন পূর্বাবস্থায় ফেরানো যাবে না।")) return;
+  try {
+    await updateDoc(doc(db, "users", _currentModalUid), { depositWallet: 0, earningsWallet: 0 });
+    logActivity('ব্যালেন্স রিসেট', `UID: ${_currentModalUid}`);
+    alert("✅ ব্যালেন্স রিসেট করা হয়েছে।");
+    openUserModal(_currentModalUid);
+    loadUsers();
+  } catch(e) { alert("❌ সমস্যা: " + e.message); }
+};
+
+// ===== KYC রিসেট =====
+window.resetUserKyc = async function() {
+  if (!_currentModalUid) return;
+  if (!confirm("এই ইউজারের KYC স্ট্যাটাস রিসেট করতে চান? সে আবার নতুন করে সাবমিট করতে পারবে।")) return;
+  try {
+    await updateDoc(doc(db, "users", _currentModalUid), { kycStatus: "none", kycNid: "" });
+    logActivity('KYC রিসেট', `UID: ${_currentModalUid}`);
+    alert("✅ KYC রিসেট করা হয়েছে।");
+    openUserModal(_currentModalUid);
+  } catch(e) { alert("❌ সমস্যা: " + e.message); }
+};
+
+// ===== অ্যাকাউন্ট ডিলিট (Firestore ডকুমেন্ট) =====
+window.deleteUserAccount = async function() {
+  if (!_currentModalUid) return;
+  const userName = _currentModalUserData ? _currentModalUserData.name : "";
+  const typed = prompt(`⚠️ এই অ্যাকাউন্ট স্থায়ীভাবে ডিলিট করতে "${userName}" টাইপ করুন:`);
+  if (typed !== userName) { alert("নাম মিলেনি, ডিলিট বাতিল করা হয়েছে।"); return; }
+  try {
+    await deleteDoc(doc(db, "users", _currentModalUid));
+    logActivity('ইউজার অ্যাকাউন্ট ডিলিট', `নাম: ${userName}, UID: ${_currentModalUid}`);
+    alert("✅ অ্যাকাউন্ট ডিলিট করা হয়েছে। (নোট: Firebase Auth থেকে আলাদাভাবে ডিলিট করতে হতে পারে)");
+    closeUserModal();
+    loadUsers();
+  } catch(e) { alert("❌ সমস্যা: " + e.message); }
 };
 
 // ---------- ডিপোজিট ----------
