@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>লগইন - প্রো-ইনভেস্ট</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #4F46E5; --bg-color: #F8FAFC; --text-main: #1E293B; --text-muted: #64748B; --danger: #EF4444; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
+        body { background-color: #E2E8F0; display: flex; justify-content: center; min-height: 100vh; }
+        .app-container { width: 100%; max-width: 480px; background: var(--bg-color); min-height: 100vh; padding: 20px; display: flex; flex-direction: column; justify-content: center; box-shadow: 0 0 20px rgba(0,0,0,0.08); }
+        .auth-view { display: none; animation: fadeIn 0.4s ease; }
+        .auth-view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .auth-header { text-align: center; margin-bottom: 30px; }
+        .auth-header h1 { color: var(--primary); font-size: 32px; font-weight: 700; margin-bottom: 5px; }
+        .auth-header p { color: var(--text-muted); font-size: 15px; }
+        .card { background: white; padding: 25px 20px; border-radius: 16px; border: 1px solid #E2E8F0; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .form-group { margin-bottom: 15px; }
+        .form-label { font-size: 14px; font-weight: 600; margin-bottom: 8px; display: block; color: var(--text-main); }
+        .form-control { width: 100%; padding: 14px 15px; border: 1px solid #CBD5E1; border-radius: 10px; font-size: 15px; outline: none; background: #F8FAFC; transition: 0.3s; font-family: 'Hind Siliguri', sans-serif; }
+        .form-control:focus { border-color: var(--primary); background: white; }
+        .btn-main { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 10px; transition: 0.2s; font-family: 'Hind Siliguri', sans-serif; }
+        .btn-main:active { transform: scale(0.98); }
+        .btn-main:disabled { background: #94A3B8; cursor: not-allowed; }
+        .auth-switch { text-align: center; margin-top: 20px; font-size: 14px; color: var(--text-muted); }
+        .auth-switch span { color: var(--primary); font-weight: 700; cursor: pointer; text-decoration: underline; }
+        #toast { visibility: hidden; min-width: 260px; background: #1E293B; color: white; text-align: center; border-radius: 10px; padding: 13px 20px; position: fixed; z-index: 1000; left: 50%; bottom: 40px; font-size: 14px; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; }
+        #toast.show { visibility: visible; opacity: 1; }
+        .spinner { display: inline-block; width: 18px; height: 18px; border: 3px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 8px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+<div class="app-container">
+
+    <!-- লগইন ভিউ -->
+    <div id="view-login" class="auth-view active">
+        <div class="auth-header">
+            <h1>প্রো-ইনভেস্ট</h1>
+            <p>আপনার অ্যাকাউন্টে লগইন করুন</p>
+        </div>
+        <div class="card">
+            <div class="form-group">
+                <label class="form-label">ইমেইল</label>
+                <input type="email" id="login-email" class="form-control" placeholder="example@email.com">
+            </div>
+            <div class="form-group">
+                <label class="form-label">পাসওয়ার্ড</label>
+                <input type="password" id="login-pass" class="form-control" placeholder="••••••••">
+            </div>
+            <button class="btn-main" id="btn-login" onclick="handleLogin()">লগইন করুন</button>
+            <div class="auth-switch">অ্যাকাউন্ট নেই? <span onclick="switchView('view-register')">নতুন অ্যাকাউন্ট খুলুন</span></div>
+        </div>
+    </div>
+
+    <!-- রেজিস্ট্রেশন ভিউ -->
+    <div id="view-register" class="auth-view">
+        <div class="auth-header">
+            <h1>স্বাগতম!</h1>
+            <p>নতুন অ্যাকাউন্ট তৈরি করুন</p>
+        </div>
+        <div class="card">
+            <div class="form-group">
+                <label class="form-label">আপনার নাম</label>
+                <input type="text" id="reg-name" class="form-control" placeholder="যেমন: রাকিব ইসলাম">
+            </div>
+            <div class="form-group">
+                <label class="form-label">ফোন নম্বর</label>
+                <input type="text" id="reg-phone" class="form-control" placeholder="017XXXXXXXX">
+            </div>
+            <div class="form-group">
+                <label class="form-label">ইমেইল</label>
+                <input type="email" id="reg-email" class="form-control" placeholder="example@email.com">
+            </div>
+            <div class="form-group">
+                <label class="form-label">পাসওয়ার্ড</label>
+                <input type="password" id="reg-pass" class="form-control" placeholder="কমপক্ষে ৬ অক্ষর">
+            </div>
+            <button class="btn-main" id="btn-register" onclick="handleRegister()">অ্যাকাউন্ট খুলুন</button>
+            <div class="auth-switch">আগে থেকেই অ্যাকাউন্ট আছে? <span onclick="switchView('view-login')">লগইন করুন</span></div>
+        </div>
+    </div>
+
+</div>
+
+<div id="toast"></div>
+
+<!-- Firebase SDK -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyD3QACAZnv-Ob73R0o73H0ozCWUr08B1_M",
+        authDomain: "global-invest-76493.firebaseapp.com",
+        projectId: "global-invest-76493",
+        storageBucket: "global-invest-76493.firebasestorage.app",
+        messagingSenderId: "674905207580",
+        appId: "1:674905207580:web:ad6fa52040c034a02400d9",
+        measurementId: "G-F70NVWDZM8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // ইতিমধ্যে লগইন থাকলে সরাসরি হোমে পাঠাও
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            window.location.href = "/";
+        }
+    });
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.className = 'show';
+        setTimeout(() => { t.className = ''; }, 3000);
+    }
+
+    function setLoading(btnId, loading) {
+        const btn = document.getElementById(btnId);
+        if (loading) {
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span>অপেক্ষা করুন...';
+        } else {
+            btn.disabled = false;
+            btn.innerHTML = btnId === 'btn-login' ? 'লগইন করুন' : 'অ্যাকাউন্ট খুলুন';
+        }
+    }
+
+    function generateReferCode(uid) {
+        return "RK" + uid.substring(0, 6).toUpperCase();
+    }
+
+    // URL থেকে রেফারেল কোড ধরা (যেমন: /login?ref=RKAB12CD)
+    const urlParams = new URLSearchParams(window.location.search);
+    const refFromUrl = urlParams.get('ref');
+    if (refFromUrl) {
+        document.getElementById('view-login').classList.remove('active');
+        document.getElementById('view-register').classList.add('active');
+    }
+
+    // রেজিস্ট্রেশন
+    window.handleRegister = async function() {
+        const name = document.getElementById('reg-name').value.trim();
+        const phone = document.getElementById('reg-phone').value.trim();
+        const email = document.getElementById('reg-email').value.trim();
+        const password = document.getElementById('reg-pass').value.trim();
+
+        if (!name || !phone || !email || !password) {
+            showToast("❌ দয়া করে সব তথ্য পূরণ করুন!");
+            return;
+        }
+        if (password.length < 6) {
+            showToast("❌ পাসওয়ার্ড কমপক্ষে ৬ অক্ষর হতে হবে!");
+            return;
+        }
+
+        setLoading('btn-register', true);
+        try {
+            const userCred = await createUserWithEmailAndPassword(auth, email, password);
+            const uid = userCred.user.uid;
+            const referCode = generateReferCode(uid);
+
+            // Firestore-এ ইউজার ডেটা সেভ করো
+            await setDoc(doc(db, "users", uid), {
+                name: name,
+                phone: phone,
+                email: email,
+                uid: uid,
+                referCode: referCode,
+                referredBy: refFromUrl || null,
+                depositWallet: 0,
+                earningsWallet: 0,
+                planName: null,
+                dailyEarn: 0,
+                remainingDays: 0,
+                labelLevel: 0,
+                powerPlan: null,
+                lastNotifSeen: null,
+                createdAt: new Date().toISOString()
+            });
+
+            showToast("✅ অ্যাকাউন্ট সফলভাবে তৈরি হয়েছে!");
+            setTimeout(() => { window.location.href = "/"; }, 1000);
+
+        } catch (err) {
+            setLoading('btn-register', false);
+            if (err.code === 'auth/email-already-in-use') showToast("❌ এই ইমেইল আগেই ব্যবহৃত হয়েছে!");
+            else if (err.code === 'auth/invalid-email') showToast("❌ ইমেইল ফরম্যাট সঠিক নয়!");
+            else showToast("❌ সমস্যা হয়েছে: " + err.message);
+        }
+    };
+
+    // লগইন
+    window.handleLogin = async function() {
+        const email = document.getElementById('login-email').value.trim();
+        const password = document.getElementById('login-pass').value.trim();
+
+        if (!email || !password) {
+            showToast("❌ ইমেইল ও পাসওয়ার্ড দিন!");
+            return;
+        }
+
+        setLoading('btn-login', true);
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            showToast("✅ লগইন সফল হয়েছে!");
+            setTimeout(() => { window.location.href = "/"; }, 800);
+        } catch (err) {
+            setLoading('btn-login', false);
+            if (err.code === 'auth/user-not-found') showToast("❌ ইউজার পাওয়া যায়নি!");
+            else if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') showToast("❌ পাসওয়ার্ড ভুল হয়েছে!");
+            else if (err.code === 'auth/invalid-email') showToast("❌ ইমেইল ফরম্যাট সঠিক নয়!");
+            else showToast("❌ লগইন ব্যর্থ: " + err.message);
+        }
+    };
+
+    window.switchView = function(viewId) {
+        document.querySelectorAll('.auth-view').forEach(v => v.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+    };
+</script>
+</body>
+</html>
