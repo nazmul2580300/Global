@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>অ্যাডমিন প্যানেল - প্রো-ইনভেস্ট</title>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{
+  --primary:#4F46E5; --primary-dark:#3730A3; --bg:#F1F5F9; --card:#FFFFFF;
+  --text-main:#1E293B; --text-muted:#64748B; --success:#10B981; --danger:#EF4444; --warning:#F59E0B; --border:#E2E8F0;
+}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Hind Siliguri',sans-serif;}
+body{background:var(--bg);color:var(--text-main);}
+
+/* ---------- Login ---------- */
+#admin-login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1E1B4B,#312E81);}
+.login-box{background:white;width:100%;max-width:380px;border-radius:16px;padding:35px 30px;box-shadow:0 20px 40px rgba(0,0,0,0.25);}
+.login-box h1{font-size:24px;color:var(--primary-dark);margin-bottom:4px;}
+.login-box p{font-size:13px;color:var(--text-muted);margin-bottom:25px;}
+.form-group{margin-bottom:15px;}
+.form-label{font-size:13px;font-weight:600;display:block;margin-bottom:6px;}
+.form-control{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;outline:none;font-family:'Hind Siliguri',sans-serif;}
+.form-control:focus{border-color:var(--primary);}
+.btn{padding:12px 18px;border:none;border-radius:10px;font-weight:600;cursor:pointer;font-size:14px;font-family:'Hind Siliguri',sans-serif;}
+.btn-primary{background:var(--primary);color:white;width:100%;}
+.btn-primary:active{transform:scale(0.98);}
+#login-error{color:var(--danger);font-size:13px;margin-top:10px;display:none;}
+
+/* ---------- Layout ---------- */
+#admin-app{display:none;min-height:100vh;}
+.sidebar{width:230px;background:#1E1B4B;color:white;height:100vh;position:fixed;left:0;top:0;padding:20px 0;overflow-y:auto;}
+.sidebar h2{padding:0 20px 20px 20px;font-size:18px;border-bottom:1px solid rgba(255,255,255,0.1);margin-bottom:10px;}
+.sidebar .nav-link{display:flex;align-items:center;gap:12px;padding:13px 20px;color:#C7D2FE;cursor:pointer;font-size:14px;font-weight:500;border-left:3px solid transparent;}
+.sidebar .nav-link i{width:18px;text-align:center;}
+.sidebar .nav-link:hover{background:rgba(255,255,255,0.05);}
+.sidebar .nav-link.active{background:rgba(255,255,255,0.08);border-left-color:var(--warning);color:white;}
+.sidebar .badge-count{margin-left:auto;background:var(--danger);font-size:11px;padding:2px 7px;border-radius:10px;display:none;}
+.main{margin-left:230px;padding:25px 30px;}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px;}
+.topbar h1{font-size:20px;}
+.topbar .admin-email{font-size:13px;color:var(--text-muted);}
+.logout-link{color:var(--danger);font-size:13px;cursor:pointer;font-weight:600;margin-left:15px;}
+
+.section{display:none;}
+.section.active{display:block;animation:fadeIn .25s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:25px;}
+.stat-card{background:var(--card);border-radius:14px;padding:18px;border:1px solid var(--border);}
+.stat-card .stat-label{font-size:13px;color:var(--text-muted);margin-bottom:8px;}
+.stat-card .stat-value{font-size:26px;font-weight:700;color:var(--primary-dark);}
+
+.card{background:var(--card);border-radius:14px;border:1px solid var(--border);padding:20px;margin-bottom:20px;}
+.card h3{font-size:16px;margin-bottom:15px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{text-align:left;padding:10px;background:#F8FAFC;color:var(--text-muted);font-weight:600;border-bottom:1px solid var(--border);}
+td{padding:10px;border-bottom:1px solid #F1F5F9;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+.tag{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.tag-pending{background:#FEF3C7;color:#92400E;}
+.tag-approved{background:#D1FAE5;color:#065F46;}
+.tag-rejected{background:#FEE2E2;color:#991B1B;}
+.btn-sm{padding:6px 12px;font-size:12px;border-radius:7px;border:none;cursor:pointer;font-weight:600;margin-right:5px;}
+.btn-approve{background:var(--success);color:white;}
+.btn-reject{background:var(--danger);color:white;}
+.btn-edit{background:#EEF2FF;color:var(--primary-dark);}
+input.inline-edit{width:80px;padding:5px 7px;border:1px solid var(--border);border-radius:6px;font-size:12px;}
+.empty-row{text-align:center;color:var(--text-muted);padding:25px 0;}
+.notif-form textarea{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;font-family:'Hind Siliguri',sans-serif;margin-top:8px;}
+@media(max-width:900px){.stat-grid{grid-template-columns:repeat(2,1fr);} .sidebar{width:70px;} .sidebar h2,.sidebar .nav-link span{display:none;} .main{margin-left:70px;}}
+.toolbar{display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap;align-items:center;justify-content:space-between;}
+.search-box{position:relative;flex:1;min-width:200px;}
+.search-box input{width:100%;padding:9px 12px 9px 34px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:'Hind Siliguri',sans-serif;outline:none;}
+.search-box i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-muted);font-size:13px;}
+.btn-export{background:#EEF2FF;color:var(--primary-dark);border:1px solid #C7D2FE;padding:9px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.btn-bulk{padding:9px 14px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;border:none;display:none;align-items:center;gap:6px;}
+.bulk-bar{display:none;align-items:center;gap:10px;margin-bottom:12px;background:#FEF3C7;padding:8px 14px;border-radius:8px;font-size:12px;color:#92400E;font-weight:600;}
+.pagination{display:flex;justify-content:center;gap:6px;margin-top:15px;flex-wrap:wrap;}
+.page-btn{padding:6px 12px;border:1px solid var(--border);background:white;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;color:var(--text-muted);}
+.page-btn.active{background:var(--primary);color:white;border-color:var(--primary);}
+.row-check{width:15px;height:15px;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<!-- লগইন স্ক্রিন -->
+<div id="admin-login-screen">
+  <div class="login-box">
+    <h1><i class="fa-solid fa-shield-halved"></i> অ্যাডমিন প্যানেল</h1>
+    <p>প্রো-ইনভেস্ট সাইট ম্যানেজমেন্ট</p>
+    <div class="form-group"><label class="form-label">অ্যাডমিন ইমেইল</label><input type="email" id="admin-email" class="form-control" placeholder="admin@example.com"></div>
+    <div class="form-group"><label class="form-label">পাসওয়ার্ড</label><input type="password" id="admin-pass" class="form-control" placeholder="••••••••"></div>
+    <button class="btn btn-primary" id="admin-login-btn" onclick="adminLogin()">লগইন করুন</button>
+    <p id="login-error"></p>
+  </div>
+</div>
+
+<!-- অ্যাডমিন অ্যাপ -->
+<div id="admin-app">
+  <div class="sidebar">
+    <h2><i class="fa-solid fa-shield-halved"></i> Admin Panel</h2>
+    <div class="nav-link active" data-section="sec-dashboard" onclick="showSection('sec-dashboard')"><i class="fa-solid fa-gauge"></i><span>ড্যাশবোর্ড</span></div>
+    <div class="nav-link" data-section="sec-users" onclick="showSection('sec-users')"><i class="fa-solid fa-users"></i><span>ইউজার</span></div>
+    <div class="nav-link" data-section="sec-deposits" onclick="showSection('sec-deposits')"><i class="fa-solid fa-building-columns"></i><span>ডিপোজিট</span><span class="badge-count" id="badge-deposits">0</span></div>
+    <div class="nav-link" data-section="sec-withdrawals" onclick="showSection('sec-withdrawals')"><i class="fa-solid fa-money-bill-transfer"></i><span>উইথড্র</span><span class="badge-count" id="badge-withdrawals">0</span></div>
+    <div class="nav-link" data-section="sec-kyc" onclick="showSection('sec-kyc')"><i class="fa-solid fa-id-card"></i><span>KYC</span><span class="badge-count" id="badge-kyc">0</span></div>
+    <div class="nav-link" data-section="sec-support" onclick="showSection('sec-support')"><i class="fa-solid fa-headset"></i><span>সাপোর্ট টিকেট</span><span class="badge-count" id="badge-support">0</span></div>
+    <div class="nav-link" data-section="sec-notify" onclick="showSection('sec-notify')"><i class="fa-solid fa-bell"></i><span>নোটিফিকেশন পাঠান</span></div>
+    <div class="nav-link" data-section="sec-activity" onclick="showSection('sec-activity')"><i class="fa-solid fa-clock-rotate-left"></i><span>অ্যাক্টিভিটি লগ</span></div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <h1 id="section-title">ড্যাশবোর্ড</h1>
+      <div><span class="admin-email" id="admin-email-display"></span><span class="logout-link" onclick="adminLogout()">লগআউট</span></div>
+    </div>
+
+    <!-- ড্যাশবোর্ড -->
+    <div class="section active" id="sec-dashboard">
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-label">মোট ইউজার</div><div class="stat-value" id="stat-users">-</div></div>
+        <div class="stat-card"><div class="stat-label">পেন্ডিং ডিপোজিট</div><div class="stat-value" id="stat-deposits">-</div></div>
+        <div class="stat-card"><div class="stat-label">পেন্ডিং উইথড্র</div><div class="stat-value" id="stat-withdrawals">-</div></div>
+        <div class="stat-card"><div class="stat-label">ওপেন সাপোর্ট টিকেট</div><div class="stat-value" id="stat-tickets">-</div></div>
+      </div>
+      <div class="card"><h3>সংক্ষিপ্ত তথ্য</h3><p style="font-size:13px;color:var(--text-muted);">বাম পাশের মেনু থেকে ইউজার, ডিপোজিট, উইথড্র, KYC ও সাপোর্ট টিকেট ম্যানেজ করুন। সংখ্যা সহ ব্যাজ থাকা মেনুতে পেন্ডিং রিকোয়েস্ট আছে।</p></div>
+    </div>
+
+    <!-- ইউজার -->
+    <div class="section" id="sec-users">
+      <div class="card">
+        <div class="toolbar">
+          <h3 style="margin:0;">সকল ইউজার</h3>
+          <div style="display:flex;gap:10px;flex:1;justify-content:flex-end;flex-wrap:wrap;">
+            <div class="search-box" style="max-width:260px;"><i class="fa-solid fa-magnifying-glass"></i><input type="text" id="users-search" placeholder="নাম/ফোন/ইমেইল দিয়ে খুঁজুন..." oninput="filterUsers()"></div>
+            <button class="btn-export" onclick="exportTableToCSV('users-table-body', ['নাম','ইমেইল/ফোন','ডিপোজিট','আর্নিং','লেভেল'], 'users')"><i class="fa-solid fa-file-csv"></i> CSV</button>
+          </div>
+        </div>
+        <table><thead><tr><th>নাম</th><th>ইমেইল/ফোন</th><th>ডিপোজিট</th><th>আর্নিং</th><th>লেভেল</th><th>অ্যাকশন</th></tr></thead><tbody id="users-table-body"><tr><td colspan="6" class="empty-row">লোড হচ্ছে...</td></tr></tbody></table>
+        <div class="pagination" id="users-pagination"></div>
+      </div>
+    </div>
+
+    <!-- ডিপোজিট -->
+    <div class="section" id="sec-deposits">
+      <div class="card">
+        <div class="toolbar">
+          <h3 style="margin:0;">ডিপোজিট রিকোয়েস্ট</h3>
+          <button class="btn-export" onclick="exportTableToCSV('deposits-table-body', ['','নাম','মেথড','অ্যামাউন্ট','TrxID','স্ট্যাটাস'], 'deposit_requests')"><i class="fa-solid fa-file-csv"></i> CSV</button>
+        </div>
+        <div class="bulk-bar" id="deposits-bulk-bar"><span id="deposits-bulk-count">0 সিলেক্ট করা</span><button class="btn-bulk" style="display:inline-flex;background:var(--success);color:white;" onclick="bulkAction('depositRequests','approved')">বাল্ক অ্যাপ্রুভ</button><button class="btn-bulk" style="display:inline-flex;background:var(--danger);color:white;" onclick="bulkAction('depositRequests','rejected')">বাল্ক রিজেক্ট</button></div>
+        <table><thead><tr><th><input type="checkbox" class="row-check" onclick="toggleSelectAll('deposits',this)"></th><th>নাম</th><th>মেথড</th><th>অ্যামাউন্ট</th><th>TrxID</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead><tbody id="deposits-table-body"><tr><td colspan="7" class="empty-row">লোড হচ্ছে...</td></tr></tbody></table>
+      </div>
+    </div>
+
+    <!-- উইথড্র -->
+    <div class="section" id="sec-withdrawals">
+      <div class="card">
+        <div class="toolbar">
+          <h3 style="margin:0;">উইথড্র রিকোয়েস্ট</h3>
+          <button class="btn-export" onclick="exportTableToCSV('withdrawals-table-body', ['','নাম','মেথড','অ্যাকাউন্ট','অ্যামাউন্ট','স্ট্যাটাস'], 'withdraw_requests')"><i class="fa-solid fa-file-csv"></i> CSV</button>
+        </div>
+        <div class="bulk-bar" id="withdrawals-bulk-bar"><span id="withdrawals-bulk-count">0 সিলেক্ট করা</span><button class="btn-bulk" style="display:inline-flex;background:var(--success);color:white;" onclick="bulkAction('withdrawRequests','approved')">বাল্ক অ্যাপ্রুভ</button><button class="btn-bulk" style="display:inline-flex;background:var(--danger);color:white;" onclick="bulkAction('withdrawRequests','rejected')">বাল্ক রিজেক্ট</button></div>
+        <table><thead><tr><th><input type="checkbox" class="row-check" onclick="toggleSelectAll('withdrawals',this)"></th><th>নাম</th><th>মেথড</th><th>অ্যাকাউন্ট</th><th>অ্যামাউন্ট</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead><tbody id="withdrawals-table-body"><tr><td colspan="7" class="empty-row">লোড হচ্ছে...</td></tr></tbody></table>
+      </div>
+    </div>
+
+    <!-- KYC -->
+    <div class="section" id="sec-kyc">
+      <div class="card">
+        <div class="toolbar">
+          <h3 style="margin:0;">KYC রিকোয়েস্ট</h3>
+          <button class="btn-export" onclick="exportTableToCSV('kyc-table-body', ['','নাম','NID','স্ট্যাটাস'], 'kyc_requests')"><i class="fa-solid fa-file-csv"></i> CSV</button>
+        </div>
+        <div class="bulk-bar" id="kyc-bulk-bar"><span id="kyc-bulk-count">0 সিলেক্ট করা</span><button class="btn-bulk" style="display:inline-flex;background:var(--success);color:white;" onclick="bulkAction('kycRequests','approved')">বাল্ক অ্যাপ্রুভ</button><button class="btn-bulk" style="display:inline-flex;background:var(--danger);color:white;" onclick="bulkAction('kycRequests','rejected')">বাল্ক রিজেক্ট</button></div>
+        <table><thead><tr><th><input type="checkbox" class="row-check" onclick="toggleSelectAll('kyc',this)"></th><th>নাম</th><th>NID</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead><tbody id="kyc-table-body"><tr><td colspan="5" class="empty-row">লোড হচ্ছে...</td></tr></tbody></table>
+      </div>
+    </div>
+
+    <!-- সাপোর্ট -->
+    <div class="section" id="sec-support">
+      <div class="card">
+        <div class="toolbar">
+          <h3 style="margin:0;">সাপোর্ট টিকেট</h3>
+          <button class="btn-export" onclick="exportTableToCSV('support-table-body', ['নাম','বিষয়','বিস্তারিত','স্ট্যাটাস'], 'support_tickets')"><i class="fa-solid fa-file-csv"></i> CSV</button>
+        </div>
+        <table><thead><tr><th>নাম</th><th>বিষয়</th><th>বিস্তারিত</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead><tbody id="support-table-body"><tr><td colspan="5" class="empty-row">লোড হচ্ছে...</td></tr></tbody></table>
+      </div>
+    </div>
+
+    <!-- নোটিফিকেশন -->
+    <div class="section" id="sec-notify">
+      <div class="card notif-form">
+        <h3>সব ইউজারকে নোটিফিকেশন পাঠান</h3>
+        <div class="form-group"><label class="form-label">টাইটেল</label><input type="text" id="notif-title" class="form-control" placeholder="যেমন: নতুন প্যাকেজ এসেছে"></div>
+        <div class="form-group"><label class="form-label">মেসেজ</label><textarea id="notif-message" rows="3" placeholder="নোটিফিকেশনের বিস্তারিত লিখুন"></textarea></div>
+        <button class="btn btn-primary" style="width:auto;" onclick="sendNotification()">পাঠান</button>
+      </div>
+      <div class="card"><h3>সাম্প্রতিক নোটিফিকেশন</h3><table><thead><tr><th>টাইটেল</th><th>মেসেজ</th></tr></thead><tbody id="notif-table-body"><tr><td colspan="2" class="empty-row">লোড হচ্ছে...</td></tr></tbody></table></div>
+    </div>
+
+    <!-- অ্যাক্টিভিটি লগ -->
+    <div class="section" id="sec-activity">
+      <div class="card">
+        <div class="toolbar">
+          <h3 style="margin:0;">অ্যাডমিন অ্যাক্টিভিটি লগ</h3>
+          <button class="btn-export" onclick="exportTableToCSV('activity-table-body', ['সময়','অ্যাডমিন','অ্যাকশন','বিস্তারিত'], 'activity_log')"><i class="fa-solid fa-file-csv"></i> CSV এক্সপোর্ট</button>
+        </div>
+        <table><thead><tr><th>সময়</th><th>অ্যাডমিন</th><th>অ্যাকশন</th><th>বিস্তারিত</th></tr></thead><tbody id="activity-table-body"><tr><td colspan="4" class="empty-row">লোড হচ্ছে...</td></tr></tbody></table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, doc, updateDoc, addDoc, serverTimestamp, query, orderBy, where, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyD3QACAZnv-Ob73R0o73H0ozCWUr08B1_M",
+  authDomain: "global-invest-76493.firebaseapp.com",
+  projectId: "global-invest-76493",
+  storageBucket: "global-invest-76493.firebasestorage.app",
+  messagingSenderId: "674905207580",
+  appId: "1:674905207580:web:ad6fa52040c034a02400d9",
+  measurementId: "G-F70NVWDZM8"
+};
+
+// ⚠️ এখানে আপনার অ্যাডমিন ইমেইল(গুলো) যুক্त করুন — শুধুমাত্র এই ইমেইলগুলোই অ্যাডমিন প্যানেলে ঢুকতে পারবে
+const ADMIN_EMAILS = ["nazmul2580300@gmail.com"];
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+window.adminLogin = async function() {
+  const email = document.getElementById('admin-email').value.trim();
+  const password = document.getElementById('admin-pass').value.trim();
+  const errEl = document.getElementById('login-error');
+  errEl.style.display = 'none';
+  if (!email || !password) { errEl.textContent = "ইমেইল ও পাসওয়ার্ড দিন।"; errEl.style.display = 'block'; return; }
+  if (!ADMIN_EMAILS.includes(email)) { errEl.textContent = "এই ইমেইল অ্যাডমিন অ্যাক্সেসের অনুমতি নেই।"; errEl.style.display = 'block'; return; }
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (e) {
+    errEl.textContent = "লগইন ব্যর্থ: ভুল ইমেইল বা পাসওয়ার্ড।";
+    errEl.style.display = 'block';
+  }
+};
+
+let currentAdminEmail = "";
+window.adminLogout = async function() { await signOut(auth); };
+
+onAuthStateChanged(auth, (user) => {
+  if (user && ADMIN_EMAILS.includes(user.email)) {
+    currentAdminEmail = user.email;
+    document.getElementById('admin-login-screen').style.display = 'none';
+    document.getElementById('admin-app').style.display = 'block';
+    document.getElementById('admin-email-display').textContent = user.email;
+    loadAllData();
+  } else {
+    document.getElementById('admin-login-screen').style.display = 'flex';
+    document.getElementById('admin-app').style.display = 'none';
+    if (user && !ADMIN_EMAILS.includes(user.email)) signOut(auth);
+  }
+});
+
+window.showSection = function(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+  document.querySelector(`.nav-link[data-section="${id}"]`).classList.add('active');
+  const titles = {'sec-dashboard':'ড্যাশবোর্ড','sec-users':'ইউজার ম্যানেজমেন্ট','sec-deposits':'ডিপোজিট রিকোয়েস্ট','sec-withdrawals':'উইথড্র রিকোয়েস্ট','sec-kyc':'KYC রিকোয়েস্ট','sec-support':'সাপোর্ট টিকেট','sec-notify':'নোটিফিকেশন পাঠান','sec-activity':'অ্যাক্টিভিটি লগ'};
+  document.getElementById('section-title').textContent = titles[id] || '';
+};
+
+async function loadAllData() {
+  await Promise.all([loadUsers(), loadDeposits(), loadWithdrawals(), loadKyc(), loadSupport(), loadNotifications(), loadActivityLog()]);
+}
+
+// ---------- অ্যাক্টিভিটি লগ হেল্পার ----------
+async function logActivity(action, detail) {
+  try {
+    await addDoc(collection(db, "activityLogs"), { admin: currentAdminEmail, action, detail, createdAt: serverTimestamp() });
+    loadActivityLog();
+  } catch(e) {}
+}
+async function loadActivityLog() {
+  const body = document.getElementById('activity-table-body');
+  if (!body) return;
+  try {
+    const snap = await getDocs(query(collection(db, "activityLogs"), orderBy("createdAt", "desc"), limit(100)));
+    if (snap.empty) { body.innerHTML = '<tr><td colspan="4" class="empty-row">কোনো অ্যাক্টিভিটি নেই</td></tr>'; return; }
+    let html = "";
+    snap.forEach(d => {
+      const r = d.data();
+      const time = r.createdAt && r.createdAt.toDate ? r.createdAt.toDate().toLocaleString('bn-BD') : '-';
+      html += `<tr><td>${time}</td><td>${r.admin || '-'}</td><td>${r.action || '-'}</td><td>${r.detail || '-'}</td></tr>`;
+    });
+    body.innerHTML = html;
+  } catch(e) { body.innerHTML = '<tr><td colspan="4" class="empty-row">লোড করা যায়নি</td></tr>'; }
+}
+
+// ---------- ইউজার: সার্চ + পেজিনেশন ----------
+let allUsers = [];
+let usersCurrentPage = 1;
+const USERS_PAGE_SIZE = 10;
+
+async function loadUsers() {
+  const snap = await getDocs(collection(db, "users"));
+  allUsers = [];
+  snap.forEach(d => allUsers.push({ id: d.id, ...d.data() }));
+  document.getElementById('stat-users').textContent = allUsers.length;
+  usersCurrentPage = 1;
+  renderUsersTable(allUsers);
+}
+window.filterUsers = function() {
+  const term = document.getElementById('users-search').value.trim().toLowerCase();
+  usersCurrentPage = 1;
+  if (!term) { renderUsersTable(allUsers); return; }
+  const filtered = allUsers.filter(u =>
+    (u.name || '').toLowerCase().includes(term) ||
+    (u.email || '').toLowerCase().includes(term) ||
+    (u.phone || '').toLowerCase().includes(term)
+  );
+  renderUsersTable(filtered);
+};
+function renderUsersTable(list) {
+  const body = document.getElementById('users-table-body');
+  const pagEl = document.getElementById('users-pagination');
+  if (list.length === 0) { body.innerHTML = '<tr><td colspan="6" class="empty-row">কোনো ইউজার পাওয়া যায়নি</td></tr>'; pagEl.innerHTML = ''; return; }
+
+  const totalPages = Math.ceil(list.length / USERS_PAGE_SIZE);
+  if (usersCurrentPage > totalPages) usersCurrentPage = totalPages;
+  const start = (usersCurrentPage - 1) * USERS_PAGE_SIZE;
+  const pageItems = list.slice(start, start + USERS_PAGE_SIZE);
+
+  let html = "";
+  pageItems.forEach(u => {
+    const d_id = u.id;
+    html += `<tr>
+      <td>${u.name || '-'}</td>
+      <td>${u.email || u.phone || '-'}</td>
+      <td><input class="inline-edit" id="dep-${d_id}" value="${u.depositWallet || 0}"></td>
+      <td><input class="inline-edit" id="earn-${d_id}" value="${u.earningsWallet || 0}"></td>
+      <td><input class="inline-edit" id="lvl-${d_id}" value="${u.labelLevel || 0}" style="width:40px;"></td>
+      <td><button class="btn-sm btn-edit" onclick="saveUser('${d_id}')">সেভ</button></td>
+    </tr>`;
+  });
+  body.innerHTML = html;
+
+  // পেজিনেশন বাটন বানাও
+  let pagHtml = "";
+  if (totalPages > 1) {
+    for (let p = 1; p <= totalPages; p++) {
+      pagHtml += `<button class="page-btn ${p===usersCurrentPage?'active':''}" onclick="goToUsersPage(${p})">${p}</button>`;
+    }
+  }
+  pagEl.innerHTML = pagHtml;
+  window._currentFilteredUsers = list;
+}
+window.goToUsersPage = function(p) {
+  usersCurrentPage = p;
+  renderUsersTable(window._currentFilteredUsers || allUsers);
+};
+window.saveUser = async function(uid) {
+  const depositWallet = Number(document.getElementById(`dep-${uid}`).value) || 0;
+  const earningsWallet = Number(document.getElementById(`earn-${uid}`).value) || 0;
+  const labelLevel = Number(document.getElementById(`lvl-${uid}`).value) || 0;
+  await updateDoc(doc(db, "users", uid), { depositWallet, earningsWallet, labelLevel });
+  logActivity('ইউজার আপডেট', `UID: ${uid}, ডিপোজিট: ৳${depositWallet}, আর্নিং: ৳${earningsWallet}, লেভেল: ${labelLevel}`);
+  alert("ইউজার তথ্য আপডেট হয়েছে।");
+};
+
+// ---------- ডিপোজিট ----------
+async function loadDeposits() {
+  const snap = await getDocs(query(collection(db, "depositRequests"), orderBy("createdAt", "desc")));
+  const body = document.getElementById('deposits-table-body');
+  let pending = 0, html = "";
+  if (snap.empty) { body.innerHTML = '<tr><td colspan="7" class="empty-row">কোনো রিকোয়েস্ট নেই</td></tr>'; }
+  else {
+    snap.forEach(d => {
+      const r = d.data();
+      if (r.status === 'pending') pending++;
+      html += `<tr>
+        <td>${r.status === 'pending' ? `<input type="checkbox" class="row-check deposits-check" data-id="${d.id}" data-uid="${r.uid}" data-amount="${r.amount}" onclick="updateBulkBar('deposits')">` : ''}</td>
+        <td>${r.name || '-'}</td><td>${r.method}</td><td>৳ ${r.amount}</td><td>${r.trxId || '-'}</td>
+        <td><span class="tag tag-${r.status}">${r.status}</span></td>
+        <td>${r.status === 'pending' ? `<button class="btn-sm btn-approve" onclick="approveDeposit('${d.id}','${r.uid}',${r.amount})">অ্যাপ্রুভ</button><button class="btn-sm btn-reject" onclick="rejectRequest('depositRequests','${d.id}')">রিজেক্ট</button>` : '-'}</td>
+      </tr>`;
+    });
+    body.innerHTML = html;
+  }
+  document.getElementById('stat-deposits').textContent = pending;
+  const badge = document.getElementById('badge-deposits');
+  badge.textContent = pending; badge.style.display = pending > 0 ? 'inline-block' : 'none';
+  updateBulkBar('deposits');
+}
+window.approveDeposit = async function(reqId, uid, amount) {
+  const usnap = await getDocs(query(collection(db, "users")));
+  let current = 0;
+  usnap.forEach(u => { if (u.id === uid) current = u.data().depositWallet || 0; });
+  await updateDoc(doc(db, "users", uid), { depositWallet: current + Number(amount) });
+  await updateDoc(doc(db, "depositRequests", reqId), { status: "approved" });
+  logActivity('ডিপোজিট অ্যাপ্রুভ', `UID: ${uid}, পরিমাণ: ৳${amount}`);
+  alert("ডিপোজিট অ্যাপ্রুভ হয়েছে এবং ইউজারের ব্যালেন্স আপডেট হয়েছে।");
+  loadDeposits(); loadUsers();
+};
+
+async function loadWithdrawals() {
+  const snap = await getDocs(query(collection(db, "withdrawRequests"), orderBy("createdAt", "desc")));
+  const body = document.getElementById('withdrawals-table-body');
+  let pending = 0, html = "";
+  if (snap.empty) { body.innerHTML = '<tr><td colspan="7" class="empty-row">কোনো রিকোয়েস্ট নেই</td></tr>'; }
+  else {
+    snap.forEach(d => {
+      const r = d.data();
+      if (r.status === 'pending') pending++;
+      html += `<tr>
+        <td>${r.status === 'pending' ? `<input type="checkbox" class="row-check withdrawals-check" data-id="${d.id}" onclick="updateBulkBar('withdrawals')">` : ''}</td>
+        <td>${r.name || '-'}</td><td>${r.method}</td><td>${r.account}</td><td>৳ ${r.amount}</td>
+        <td><span class="tag tag-${r.status}">${r.status}</span></td>
+        <td>${r.status === 'pending' ? `<button class="btn-sm btn-approve" onclick="rejectRequest('withdrawRequests','${d.id}','approved')">অ্যাপ্রুভ</button><button class="btn-sm btn-reject" onclick="rejectRequest('withdrawRequests','${d.id}')">রিজেক্ট</button>` : '-'}</td>
+      </tr>`;
+    });
+    body.innerHTML = html;
+  }
+  document.getElementById('stat-withdrawals').textContent = pending;
+  const badge = document.getElementById('badge-withdrawals');
+  badge.textContent = pending; badge.style.display = pending > 0 ? 'inline-block' : 'none';
+  updateBulkBar('withdrawals');
+}
+
+window.rejectRequest = async function(col, id, status = "rejected") {
+  await updateDoc(doc(db, col, id), { status });
+  logActivity(status === 'approved' ? 'রিকোয়েস্ট অ্যাপ্রুভ' : 'রিকোয়েস্ট রিজেক্ট', `${col} / ID: ${id}`);
+  if (col === 'depositRequests') loadDeposits();
+  if (col === 'withdrawRequests') loadWithdrawals();
+  if (col === 'kycRequests') loadKyc();
+  if (col === 'supportTickets') loadSupport();
+};
+
+async function loadKyc() {
+  const snap = await getDocs(query(collection(db, "kycRequests"), orderBy("createdAt", "desc")));
+  const body = document.getElementById('kyc-table-body');
+  let pending = 0, html = "";
+  if (snap.empty) { body.innerHTML = '<tr><td colspan="5" class="empty-row">কোনো রিকোয়েস্ট নেই</td></tr>'; }
+  else {
+    snap.forEach(d => {
+      const r = d.data();
+      if (r.status === 'pending') pending++;
+      html += `<tr>
+        <td>${r.status === 'pending' ? `<input type="checkbox" class="row-check kyc-check" data-id="${d.id}" onclick="updateBulkBar('kyc')">` : ''}</td>
+        <td>${r.name || '-'}</td><td>${r.nid || '-'}</td><td><span class="tag tag-${r.status}">${r.status}</span></td>
+        <td>${r.status === 'pending' ? `<button class="btn-sm btn-approve" onclick="rejectRequest('kycRequests','${d.id}','approved')">অ্যাপ্রুভ</button><button class="btn-sm btn-reject" onclick="rejectRequest('kycRequests','${d.id}')">রিজেক্ট</button>` : '-'}</td></tr>`;
+    });
+    body.innerHTML = html;
+  }
+  const badge = document.getElementById('badge-kyc');
+  badge.textContent = pending; badge.style.display = pending > 0 ? 'inline-block' : 'none';
+  updateBulkBar('kyc');
+}
+
+async function loadSupport() {
+  const snap = await getDocs(query(collection(db, "supportTickets"), orderBy("createdAt", "desc")));
+  const body = document.getElementById('support-table-body');
+  let open = 0, html = "";
+  if (snap.empty) { body.innerHTML = '<tr><td colspan="5" class="empty-row">কোনো টিকেট নেই</td></tr>'; }
+  else {
+    snap.forEach(d => {
+      const r = d.data();
+      if (r.status === 'open') open++;
+      html += `<tr><td>${r.name || '-'}</td><td>${r.subject || '-'}</td><td>${r.detail || '-'}</td><td><span class="tag tag-${r.status === 'open' ? 'pending' : 'approved'}">${r.status}</span></td>
+        <td>${r.status === 'open' ? `<button class="btn-sm btn-approve" onclick="rejectRequest('supportTickets','${d.id}','closed')">ক্লোজ করুন</button>` : '-'}</td></tr>`;
+    });
+    body.innerHTML = html;
+  }
+  document.getElementById('stat-tickets').textContent = open;
+  const badge = document.getElementById('badge-support');
+  badge.textContent = open; badge.style.display = open > 0 ? 'inline-block' : 'none';
+}
+
+window.sendNotification = async function() {
+  const title = document.getElementById('notif-title').value.trim();
+  const message = document.getElementById('notif-message').value.trim();
+  if (!title || !message) { alert("টাইটেল ও মেসেজ দিন।"); return; }
+  await addDoc(collection(db, "notifications"), { title, message, createdAt: serverTimestamp() });
+  logActivity('নোটিফিকেশন পাঠানো', title);
+  document.getElementById('notif-title').value = "";
+  document.getElementById('notif-message').value = "";
+  alert("নোটিফিকেশন পাঠানো হয়েছে!");
+  loadNotifications();
+};
+
+async function loadNotifications() {
+  const snap = await getDocs(query(collection(db, "notifications"), orderBy("createdAt", "desc"), limit(10)));
+  const body = document.getElementById('notif-table-body');
+  if (snap.empty) { body.innerHTML = '<tr><td colspan="2" class="empty-row">কোনো নোটিফিকেশন নেই</td></tr>'; return; }
+  let html = "";
+  snap.forEach(d => { const n = d.data(); html += `<tr><td>${n.title}</td><td>${n.message}</td></tr>`; });
+  body.innerHTML = html;
+}
+
+// ---------- বাল্ক অ্যাপ্রুভ/রিজেক্ট ----------
+window.toggleSelectAll = function(prefix, checkboxEl) {
+  document.querySelectorAll(`.${prefix}-check`).forEach(c => c.checked = checkboxEl.checked);
+  updateBulkBar(prefix);
+};
+window.updateBulkBar = function(prefix) {
+  const checks = document.querySelectorAll(`.${prefix}-check:checked`);
+  const bar = document.getElementById(`${prefix}-bulk-bar`);
+  const countEl = document.getElementById(`${prefix}-bulk-count`);
+  if (!bar) return;
+  if (checks.length > 0) { bar.style.display = 'flex'; countEl.innerText = `${checks.length} সিলেক্ট করা`; }
+  else { bar.style.display = 'none'; }
+};
+window.bulkAction = async function(col, status) {
+  const prefixMap = { depositRequests:'deposits', withdrawRequests:'withdrawals', kycRequests:'kyc' };
+  const prefix = prefixMap[col];
+  const checks = document.querySelectorAll(`.${prefix}-check:checked`);
+  if (checks.length === 0) { alert("কোনো আইটেম সিলেক্ট করা হয়নি।"); return; }
+  if (!confirm(`${checks.length} টি রিকোয়েস্ট ${status === 'approved' ? 'অ্যাপ্রুভ' : 'রিজেক্ট'} করতে চান?`)) return;
+
+  for (const c of checks) {
+    const id = c.dataset.id;
+    await updateDoc(doc(db, col, id), { status });
+    if (col === 'depositRequests' && status === 'approved') {
+      const uid = c.dataset.uid;
+      const amount = Number(c.dataset.amount);
+      const usnap = await getDocs(query(collection(db, "users")));
+      let current = 0;
+      usnap.forEach(u => { if (u.id === uid) current = u.data().depositWallet || 0; });
+      await updateDoc(doc(db, "users", uid), { depositWallet: current + amount });
+    }
+  }
+  logActivity('বাল্ক অ্যাকশন', `${col} - ${checks.length} আইটেম ${status}`);
+  alert("বাল্ক অ্যাকশন সম্পন্ন হয়েছে।");
+  if (col === 'depositRequests') { loadDeposits(); loadUsers(); }
+  if (col === 'withdrawRequests') loadWithdrawals();
+  if (col === 'kycRequests') loadKyc();
+};
+
+// ---------- CSV এক্সপোর্ট ----------
+window.exportTableToCSV = function(tableBodyId, headers, filename) {
+  const body = document.getElementById(tableBodyId);
+  if (!body) return;
+  const rows = Array.from(body.querySelectorAll('tr'));
+  let csv = headers.join(',') + '\n';
+  rows.forEach(row => {
+    const cells = Array.from(row.querySelectorAll('td'));
+    if (cells.length === 0) return;
+    const values = cells.map(td => {
+      // checkbox/বাটন কলাম এড়িয়ে শুধু টেক্সট নাও
+      const checkbox = td.querySelector('input[type="checkbox"]');
+      if (checkbox) return '';
+      const btn = td.querySelector('button');
+      if (btn) return '';
+      let text = td.innerText.trim().replace(/"/g, '""');
+      return `"${text}"`;
+    });
+    if (values.every(v => v === '' || v === '""')) return;
+    csv += values.join(',') + '\n';
+  });
+  const blob = new Blob(["\uFEFF" + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${filename}_${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+};
+</script>
+</body>
+</html>
