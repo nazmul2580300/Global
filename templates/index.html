@@ -918,7 +918,7 @@
         document.getElementById('home-earnings').innerText = earnings.toLocaleString('en-IN', {minimumFractionDigits:2});
         document.getElementById('home-total-earn').innerText = earnings.toLocaleString();
 
-        const inviteLink = `https://global-invest-76493.web.app/login?ref=${referCode}`;
+        const inviteLink = `${window.location.origin}/login?ref=${referCode}`;
         document.getElementById('refCodeText').value = referCode;
         document.getElementById('refLinkText').value = inviteLink;
         document.getElementById('dynamic-qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(inviteLink)}`;
