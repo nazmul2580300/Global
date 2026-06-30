@@ -360,7 +360,8 @@ window.showSection = function(id) {
 };
 
 async function loadAllData() {
-  await Promise.all([loadUsers(), loadDeposits(), loadWithdrawals(), loadKyc(), loadSupport(), loadNotifications(), loadActivityLog()]);
+  const results = await Promise.allSettled([loadUsers(), loadDeposits(), loadWithdrawals(), loadKyc(), loadSupport(), loadNotifications(), loadActivityLog()]);
+  results.forEach((r, i) => { if (r.status === 'rejected') console.error('লোড এরর [' + i + ']:', r.reason); });
 }
 
 // ---------- অ্যাক্টিভিটি লগ হেল্পার ----------
@@ -392,13 +393,19 @@ let usersCurrentPage = 1;
 const USERS_PAGE_SIZE = 10;
 
 async function loadUsers() {
-  const snap = await getDocs(collection(db, "users"));
-  allUsers = [];
-  snap.forEach(d => allUsers.push({ id: d.id, ...d.data() }));
-  await computeReferCounts();
-  document.getElementById('stat-users').textContent = allUsers.length;
-  usersCurrentPage = 1;
-  renderUsersTable(allUsers);
+  try {
+    const snap = await getDocs(collection(db, "users"));
+    allUsers = [];
+    snap.forEach(d => allUsers.push({ id: d.id, ...d.data() }));
+    await computeReferCounts();
+    document.getElementById('stat-users').textContent = allUsers.length;
+    usersCurrentPage = 1;
+    renderUsersTable(allUsers);
+  } catch(e) {
+    console.error('loadUsers এরর:', e);
+    const body = document.getElementById('users-table-body');
+    if (body) body.innerHTML = `<tr><td colspan="8" class="empty-row" style="color:var(--danger);">ইউজার লোড করা যায়নি: ${e.message}<br><small>Firestore Security Rules চেক করুন।</small></td></tr>`;
+  }
 }
 window.filterUsers = function() {
   const term = document.getElementById('users-search').value.trim().toLowerCase();
